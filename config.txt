@@ -1,0 +1,1 @@
+file_path=C:\Program Files (x86)\Steam\userdata\[SteamId]\730\local\cfg\cs2_video.txt
