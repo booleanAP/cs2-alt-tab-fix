@@ -1,5 +1,3 @@
-# filepath: /E:/dev/cs2-alt-tab-fix/main.ps1
-
 $dirPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 $configFilePath = Join-Path $dirPath 'config.txt'
