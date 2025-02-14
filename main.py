@@ -1,4 +1,8 @@
-config_file_path = 'config.txt'
+import os 
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+config_file_path = os.path.join(dir_path, 'config.txt')
 
 # Read the configuration file to get the file path
 with open(config_file_path, 'r') as config_file:
