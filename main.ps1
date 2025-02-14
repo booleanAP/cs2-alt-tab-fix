@@ -34,3 +34,6 @@ if ($filePath) {
 } else {
     Write-Output "File path not found in the configuration file."
 }
+
+# Prompt to press any key to exit
+Read-Host -Prompt "Press any key to exit"
