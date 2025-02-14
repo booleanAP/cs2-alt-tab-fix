@@ -1,5 +1,5 @@
 # cs2-alt-tab-fix
- Changes cs2_video.txt to fix the alt tabbing wonkiness
+ Changes cs2_video.txt to fix the alt tabbing wonkiness. Has a python and powershell version.
 
 
 ## Need to create a config.txt file and put path to the cs2_video.txt in there like so:
