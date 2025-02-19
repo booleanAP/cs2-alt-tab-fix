@@ -1,39 +1,29 @@
-$dirPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$directories = @(
+    "C:\Program Files (x86)\Steam\userdata\*",
+    "D:\Program Files (x86)\Steam\userdata\*"
+)
 
-$configFilePath = Join-Path $dirPath 'config.txt'
+foreach ($directory in $directories) {
+    if (Test-Path -Path $directory) {
+        $subfolders = Get-ChildItem -Path $directory -Directory
+        foreach ($subfolder in $subfolders) {
+            $cs2_video_path = Join-Path -Path $subfolder.FullName -ChildPath "730\local\cfg\cs2_video.txt"
+            if (Test-Path -Path $cs2_video_path) {
+                $lines = Get-Content -Path $cs2_video_path
 
-# Read the configuration file to get the file path
-$configLines = Get-Content $configFilePath
+                for ($i = 0; $i -lt $lines.Length; $i++) {
+                    if ($lines[$i] -match 'setting.fullscreen_min_on_focus_loss') {
+                        $lines[$i] = "`t`"setting.fullscreen_min_on_focus_loss`"`t`t`"0`""
+                        break
+                    }
+                }
 
-# Extract the file path from the configuration file
-$filePath = $null
-foreach ($line in $configLines) {
-    if ($line -match '^file_path=') {
-        $filePath = $line -replace '^file_path=', ''
-        $filePath = $filePath.Trim()
-        break
-    }
-}
+                Set-Content -Path $cs2_video_path -Value $lines
 
-if ($filePath) {
-    # Read the file
-    $lines = Get-Content $filePath
-
-    # Modify the specific line
-    for ($i = 0; $i -lt $lines.Length; $i++) {
-        if ($lines[$i] -match 'setting.fullscreen_min_on_focus_loss') {
-            $lines[$i] = "`t`"setting.fullscreen_min_on_focus_loss`"`t`t`"0`""
-            break
+                Write-Output "The value of 'setting.fullscreen_min_on_focus_loss' has been updated to '0' in $cs2_video_path."
+            }
         }
     }
-
-    # Write the changes back to the file
-    Set-Content -Path $filePath -Value $lines
-
-    Write-Output "The value of 'setting.fullscreen_min_on_focus_loss' has been updated to '0'."
-} else {
-    Write-Output "File path not found in the configuration file."
 }
-
-# Prompt to press any key to exit
-Read-Host -Prompt "Press any key to exit"
+# Prompt to press enter to exit
+Read-Host -Prompt "Press enter to exit"

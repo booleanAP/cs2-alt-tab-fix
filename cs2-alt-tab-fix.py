@@ -1,35 +1,27 @@
 import os 
+import glob
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+directories = [
+    r"C:\Program Files (x86)\Steam\userdata\*",
+    r"D:\Program Files (x86)\Steam\userdata\*"
+]
 
-config_file_path = os.path.join(dir_path, 'config.txt')
+for directory in directories:
+    for subfolder in glob.glob(directory):
+        cs2_video_path = os.path.join(subfolder, "730", "local", "cfg", "cs2_video.txt")
+        if os.path.exists(cs2_video_path):
+            with open(cs2_video_path, 'r') as file:
+                lines = file.readlines()
 
-# Read the configuration file to get the file path
-with open(config_file_path, 'r') as config_file:
-    config_lines = config_file.readlines()
+            for i, line in enumerate(lines):
+                if 'setting.fullscreen_min_on_focus_loss' in line:
+                    lines[i] = '\t"setting.fullscreen_min_on_focus_loss"\t\t"0"\n'
+                    break
 
-# Extract the file path from the configuration file
-file_path = None
-for line in config_lines:
-    if line.startswith('file_path='):
-        file_path = line.split('=')[1].strip()
-        break
+            with open(cs2_video_path, 'w') as file:
+                file.writelines(lines)
 
-if file_path:
-    # Read the file
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-
-    # Modify the specific line
-    for i, line in enumerate(lines):
-        if 'setting.fullscreen_min_on_focus_loss' in line:
-            lines[i] = '\t"setting.fullscreen_min_on_focus_loss"\t\t"0"\n'
-            break
-
-    # Write the changes back to the file
-    with open(file_path, 'w') as file:
-        file.writelines(lines)
-
-    print("The value of 'setting.fullscreen_min_on_focus_loss' has been updated to '0'.")
-else:
-    print("File path not found in the configuration file.")
+            print(f"The value of 'setting.fullscreen_min_on_focus_loss' has been updated to '0' in {cs2_video_path}.")
+            
+# Wait for user input before closing
+input("Press Enter to exit...")
