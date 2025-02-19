@@ -15,7 +15,7 @@ for directory in directories:
 
             for i, line in enumerate(lines):
                 if 'setting.fullscreen_min_on_focus_loss' in line:
-                    lines[i] = '\t"setting.fullscreen_min_on_focus_loss"\t\t"0"\n'
+                    lines[i] = line.replace('"1"', '"0"')
                     break
 
             with open(cs2_video_path, 'w') as file:

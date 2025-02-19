@@ -13,7 +13,7 @@ foreach ($directory in $directories) {
 
                 for ($i = 0; $i -lt $lines.Length; $i++) {
                     if ($lines[$i] -match 'setting.fullscreen_min_on_focus_loss') {
-                        $lines[$i] = "`t`"setting.fullscreen_min_on_focus_loss`"`t`t`"0`""
+                        $lines[$i] = $lines[$i] -replace '"1"', '"0"'
                         break
                     }
                 }
